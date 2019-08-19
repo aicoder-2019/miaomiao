@@ -1,14 +1,14 @@
 <template>
   <div class="movie_body">
-    <Loading v-if="isLoading"/>
+    <Loading v-if="isLoading" />
     <Scroller v-else>
       <ul>
         <li v-for="(item,index) in comingList" :key="index">
-          <div class="pic_show">
+          <div class="pic_show" @tap="handleToDetail(item.id)">
             <img :src="item.img | setWH('128.180')" />
           </div>
           <div class="info_list">
-            <h2>
+            <h2 @tap="handleToDetail(item.id)">
               {{item.nm}}
               <img v-if="item.version" src="../../assets/maxs.png" />
             </h2>
@@ -30,9 +30,15 @@ export default {
   data() {
     return {
       comingList: [],
-      isLoading:true,
+      isLoading: true,
       prevCityId: -1
     };
+  },
+  methods: {
+    handleToDetail(movieId) {
+      // console.log(movieId);
+      this.$router.push("/movie/detail/2/" + movieId);
+    }
   },
   activated() {
     var cityId = this.$store.state.city.id;
@@ -41,12 +47,12 @@ export default {
     }
     this.isLoading = true;
     console.log(111);
-    this.axios.get("/api/movieComingList?cityId="+cityId).then(res => {
+    this.axios.get("/api/movieComingList?cityId=" + cityId).then(res => {
       console.log(res);
       var msg = res.data.msg;
       if (msg === "ok") {
         this.comingList = res.data.data.comingList;
-        this.isLoading = false
+        this.isLoading = false;
         this.prevCityId = cityId;
       }
     });
