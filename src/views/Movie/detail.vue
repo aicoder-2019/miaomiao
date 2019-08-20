@@ -3,10 +3,13 @@
     <Header title="影片详情">
       <i class="iconfont icon-right" @touchstart="handleToBack"></i>
     </Header>
-    <Loading v-if="isLoading"/>
+    <Loading v-if="isLoading" />
     <div v-else id="content" class="contentDetail">
       <div class="detail_list">
-        <div class="detail_list_bg"></div>
+        <div
+          class="detail_list_bg"
+          :style="{'background-image':'url('+(detailMovie.albumImg || detailMovie.img.replace(/w\.h/,'148.208')) +')'}"
+        ></div>
         <div class="detail_list_filter"></div>
         <div class="detail_list_content">
           <div class="detail_list_img">
@@ -32,7 +35,7 @@
               <img :src="item | setWH('140.127')" alt />
             </div>
             <!-- <p>陈建斌</p>
-            <p>马先勇</p> -->
+            <p>马先勇</p>-->
           </li>
         </ul>
       </div>
@@ -45,8 +48,8 @@ export default {
   name: "Detail",
   data() {
     return {
-      detailMovie:{},
-      isLoading:true
+      detailMovie: {},
+      isLoading: true
     };
   },
   components: {
@@ -60,21 +63,21 @@ export default {
   },
   mounted() {
     // console.log(this.movieId);
-    this.axios('/api/detailmovie?movieId='+this.movieId).then(res=>{
-      var msg = res.data.msg
-      if(msg ==='ok'){
-        this.detailMovie = res.data.data.detailMovie
-        this.isLoading = false
+    this.axios("/api/detailmovie?movieId=" + this.movieId).then(res => {
+      var msg = res.data.msg;
+      if (msg === "ok") {
+        this.detailMovie = res.data.data.detailMovie;
+        this.isLoading = false;
         console.log(this.detailMovie);
-        this.$nextTick(()=>{
-          new Swiper(this.$refs.detail_player,{
-            slidesPerView:'auto',
-            freeMode:true,
-            freeModeSticky:true
-          })
-        })
+        this.$nextTick(() => {
+          new Swiper(this.$refs.detail_player, {
+            slidesPerView: "auto",
+            freeMode: true,
+            freeModeSticky: true
+          });
+        });
       }
-    })
+    });
   }
 };
 </script>
@@ -89,7 +92,7 @@ export default {
   background: #fff;
 }
 #detailContainer.slide-enter-active {
-  animation: slideMove .3s;
+  animation: slideMove 0.3s;
 }
 @keyframes slideMove {
   0% {
